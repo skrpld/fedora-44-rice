@@ -10,7 +10,7 @@ sudo dnf install \
 	https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
 sudo dnf group install --allowerasing \
-	multimedia
+	multimedia \
 	sound-and-video
 sudo dnf install --allowerasing \
 	git \
@@ -27,7 +27,7 @@ sudo dnf install --allowerasing \
 	power-profiles-daemon \
 	zram-generator \
 	stow \
-	crony
+	chrony
 
 sudo systemctl enable --now \
 	bluetooth \
@@ -41,10 +41,9 @@ echo "w /sys/class/power_supply/BAT0/charge_control_end_threshold - - - - 60" | 
 # # Graphics	                 #
 # ================================
 
-sudo dnf copr enable \
-	yalter/niri \
-	lionheartp/Hyprland \
-	lukenukem/asus-linux
+sudo dnf copr enable yalter/niri
+sudo dnf copr enable lionheartp/Hyprland
+sudo dnf copr enable lukenukem/asus-linux
 
 sudo dnf install \
 	niri \
@@ -52,7 +51,7 @@ sudo dnf install \
 	greetd \
 	noctalia-greeter \
 	asusctl \
-	polkit-gnome \
+	mate-polkit \
 	libinput \
 	brightnessctl \
 	xdg-desktop-portal-gnome \
