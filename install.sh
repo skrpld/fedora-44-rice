@@ -54,7 +54,7 @@ sudo dnf makecache --refresh
 sudo dnf copr enable -y yalter/niri
 sudo dnf copr enable -y lukenukem/asus-linux
 sudo dnf copr enable -y scottames/ghostty
-sudo dnf copr enable -y materka/starship
+sudo dnf copr enable -y atim/starship
 
 # ==============================================================================
 # # Package Installation (Single DNF Transaction)
