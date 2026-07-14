@@ -4,24 +4,19 @@
 # # Error Handling & Logging Setup
 # ==============================================================================
 
-# Exit immediately if a pipeline returns a non-zero status
 set -e
 set -o pipefail
 
-# Define log file path
 LOG_FILE="$HOME/fedora_setup.log"
 
-# Redirect all stderr (errors) and stdout (output) to both the console and the log file
 exec > >(tee -i "$LOG_FILE")
 exec 2>&1
 
-# Custom error handler function
 failure_handler() {
     local exit_code=$?
     local line_no=$1
     local command="$2"
-    
-    # Print highly visible error message in red
+
     echo -e "\n\e[1;31m─────────────────────────────────────────────────────────────────\e[0m"
     echo -e "\e[1;31m✖ ERROR: Setup failed!\e[0m"
     echo -e "\e[1;31mCommand: '$command' on line $line_no exited with status $exit_code.\e[0m"
@@ -30,12 +25,10 @@ failure_handler() {
     exit "$exit_code"
 }
 
-# Register the error handler for any command failure
 trap 'failure_handler ${LINENO} "$BASH_COMMAND"' ERR
 
-# Colors for visual status updates
 GREEN='\e[1;32m'
-NC='\e[0m' # No Color
+NC='\e[0m'
 
 echo -e "${GREEN}🚀 Starting Fedora 44 setup... Full log will be saved to: $LOG_FILE${NC}"
 
@@ -45,17 +38,20 @@ echo -e "${GREEN}🚀 Starting Fedora 44 setup... Full log will be saved to: $LO
 
 echo -e "\n${GREEN}📦 Configuring repositories...${NC}"
 
-# Disable the default Cisco openh264 repo
-sudo dnf config-manager disable fedora-cisco-openh264
+# Disable the default Cisco openh264 repo (dnf5 syntax)
+sudo dnf config-manager setopt fedora-cisco-openh264.enabled=0
 
 # Install RPM Fusion (Free and Non-free)
 sudo dnf install -y \
     https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
     https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
+# Refresh metadata after adding new repos (dnf5)
+sudo dnf clean metadata
+sudo dnf makecache --refresh
+
 # Enable required COPR repositories
 sudo dnf copr enable -y yalter/niri
-sudo dnf copr enable -y lionheartp/Hyprland
 sudo dnf copr enable -y lukenukem/asus-linux
 sudo dnf copr enable -y scottames/ghostty
 sudo dnf copr enable -y materka/starship
@@ -65,15 +61,14 @@ sudo dnf copr enable -y materka/starship
 # ==============================================================================
 
 echo -e "\n${GREEN}📥 Installing system groups and multimedia codecs...${NC}"
-# Install multimedia groups first to prevent dependency conflicts
 sudo dnf group install -y --allowerasing multimedia sound-and-video
 
 echo -e "\n${GREEN}📥 Installing applications, fonts, and drivers...${NC}"
-# Combine everything into one DNF command to minimize metadata refresh times
 sudo dnf install -y --allowerasing \
     git \
     ffmpeg \
     mesa-va-drivers-freeworld \
+    mesa-va-drivers-freeworld.i686 \
     mesa-vulkan-drivers \
     pipewire \
     pipewire-utils \
@@ -84,7 +79,6 @@ sudo dnf install -y --allowerasing \
     libheif-freeworld \
     power-profiles-daemon \
     zram-generator \
-    chrony \
     niri \
     noctalia \
     greetd \
@@ -112,7 +106,7 @@ sudo dnf install -y --allowerasing \
 echo -e "\n${GREEN}⚙️ Configuring system services and hardware...${NC}"
 
 # Enable core services
-sudo systemctl enable --now bluetooth power-profiles-daemon chronyd
+sudo systemctl enable --now bluetooth power-profiles-daemon
 
 # Enable ASUS-specific services if they exist
 if systemctl list-unit-files | grep -q asusd; then
