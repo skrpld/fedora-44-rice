@@ -82,9 +82,7 @@ sudo dnf install -y --allowerasing \
     niri \
     noctalia \
     greetd \
-    noctalia-greeter \
     tuigreet \
-    cage \
     asusctl \
     supergfxctl \
     mate-polkit \
@@ -93,7 +91,9 @@ sudo dnf install -y --allowerasing \
     xdg-desktop-portal-gnome \
     xorg-x11-server-Xwayland \
     jetbrains-mono-fonts \
-    fish \
+    zsh \
+    zsh-syntax-highlighting \
+    zsh-autosuggestions \
     starship \
     fastfetch \
     btop \
@@ -134,10 +134,10 @@ if ! groups "$USER" | grep -q "\bvideo\b"; then
     sudo usermod -aG video "$USER"
 fi
 
-# Change default shell to Fish for the current user
-if [ "$SHELL" != "$(which fish)" ]; then
-    echo "Changing default shell to Fish..."
-    chsh -s "$(which fish)"
+# Change default shell to Zsh for the current user
+if [ "$SHELL" != "$(which zsh)" ]; then
+    echo "Changing default shell to Zsh..."
+    chsh -s "$(which zsh)"
 fi
 
 echo -e "\n${GREEN}🎉 System setup completed successfully!${NC}"
