@@ -83,8 +83,7 @@ sudo dnf install -y --allowerasing \
     noctalia \
     greetd \
     noctalia-greeter \
-    greetd-tuigreet \
-    greetd-regreet \
+    tuigreet \
     cage \
     asusctl \
     supergfxctl \
