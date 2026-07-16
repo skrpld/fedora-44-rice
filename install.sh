@@ -81,7 +81,11 @@ sudo dnf install -y --allowerasing \
     zram-generator \
     niri \
     noctalia \
-    sddm \
+    greetd \
+    noctalia-greeter \
+    greetd-tuigreet \
+    greetd-regreet \
+    cage \
     asusctl \
     supergfxctl \
     mate-polkit \
@@ -106,9 +110,6 @@ echo -e "\n${GREEN}⚙️ Configuring system services and hardware...${NC}"
 
 # Enable core services
 sudo systemctl enable --now bluetooth power-profiles-daemon
-
-# Enable SDDM display manager (without --now to avoid killing the active TTY session)
-sudo systemctl enable sddm.service
 
 # Enable ASUS-specific services if they exist
 if systemctl list-unit-files | grep -q asusd; then
