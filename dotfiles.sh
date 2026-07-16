@@ -81,3 +81,4 @@ for rel_path in "${!CONFIGS[@]}"; do
 done
 
 log "Done. Configs installed from: $DOTFILES_DIR"
+
