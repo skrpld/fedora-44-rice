@@ -55,6 +55,7 @@ sudo dnf copr enable -y yalter/niri
 sudo dnf copr enable -y lukenukem/asus-linux
 sudo dnf copr enable -y scottames/ghostty
 sudo dnf copr enable -y atim/starship
+sudo dnf copr enable -y peterwu/rendezvous
 
 # ==============================================================================
 # # Package Installation (Single DNF Transaction)
@@ -67,9 +68,11 @@ echo -e "\n${GREEN}📥 Installing applications, fonts, and drivers...${NC}"
 sudo dnf install -y --allowerasing \
     git \
     ffmpeg \
+    mesa-va-drivers \
     mesa-va-drivers-freeworld \
     mesa-va-drivers-freeworld.i686 \
     mesa-vulkan-drivers \
+    libva-utils \
     pipewire \
     pipewire-utils \
     pipewire-pulse \
@@ -78,7 +81,6 @@ sudo dnf install -y --allowerasing \
     bluez \
     libheif-freeworld \
     power-profiles-daemon \
-    zram-generator \
     niri \
     noctalia \
     greetd \
@@ -91,6 +93,7 @@ sudo dnf install -y --allowerasing \
     xdg-desktop-portal-gnome \
     xorg-x11-server-Xwayland \
     jetbrains-mono-fonts \
+    sudo dnf install bibata-cursor-themes \
     zsh \
     zsh-syntax-highlighting \
     zsh-autosuggestions \
